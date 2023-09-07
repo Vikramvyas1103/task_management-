@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag & Drop API</title>
+
+    <link rel="stylesheet" href="../static/style.css" />
+    
+    <script src="../static/drag.js" defer></script>
+    <script src="../static/todo.js" defer></script>
+</head>
+<body>
+    <div class="board">
+        <form action="/api/insert" method="POST" id="todo-form">
+            <input type="text" name="title" placeholder="New TODO..." id="todo-input" />
+            <input type="text" name="description" placeholder="Description..." id="description-input" />
+            <select name="status">
+                <option value="todo">Todo</option>
+                <option value="doing">Doing</option>
+                <option value="done">Done</option>
+            </select>
+            <button type="submit" class="submit-button">Add</button>
+        </form>
+
+        <div class="lanes">
+            <div class="swim-lane" id="todo-lane">
+                <h3 class="heading">TODO</h3>
+                {% for task in tasks %}
+                    {% if task['status'] == "todo"%}
+                    <div class="task">
+                        <p class="title">{{ task['title'] }}</p>
+                        <p class="description">{{ task['description'] }}</p>
+                        <form action="/api/edit/{{task._id}}"> 
+                            <input type="submit" class="editBtn" id="{{task._id}}" value="Edit Task"> 
+                        </form>
+                        <form action="/api/delete/{{task._id}}"> 
+                            <input type="submit" class="deleteBtn" id="{{task._id}}" value="Delete Task"> 
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="swim-lane" id="todo-lane">
+                <h3 class="heading">DOING</h3>
+                {% for task in tasks %}
+                    {% if task.status == "doing" %}
+                    <div class="task">
+                        <p class="title">{{ task.title }}</p>
+                        <p class="description">{{ task.description }}</p>
+                        <form action="/api/edit/{{task._id}}"> 
+                            <input type="submit" class="editBtn" id="{{task._id}}" value="Edit Task"> 
+                        </form>
+                        <form action="/api/delete/{{task._id}}"> 
+                            <input type="submit" class="deleteBtn" id="{{task._id}}" value="Delete Task"> 
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="swim-lane" id="todo-lane">
+                <h3 class="heading">DONE</h3>
+                {% for task in tasks %}
+                {% if task.status == "done"%}
+                <div class="task">
+                        <p class="title">{{ task.title }}</p>
+                        <p class="description">{{ task.description }}</p>
+                        <form action="/api/edit/{{task._id}}"> 
+                            <input type="submit" class="editBtn" id="{{task._id}}" value="Edit Task"> 
+                        </form>
+                        <form action="/api/delete/{{task._id}}"> 
+                            <input type="submit" class="deleteBtn" id="{{task._id}}" value="Delete Task"> 
+                        </form>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
